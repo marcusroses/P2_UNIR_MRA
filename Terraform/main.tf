@@ -1,0 +1,47 @@
+# https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs
+# https://github.com/hashicorp/terraform-provider-azurerm
+
+# 1. Specify the version of the AzureRM Provider to use
+terraform {
+  required_providers {
+    azurerm = {
+      source = "hashicorp/azurerm"
+      version = "=3.0.1"
+    }
+  }
+}
+
+# 2. Configure the AzureRM Provider
+provider "azurerm" {
+  # The AzureRM Provider supports authenticating using via the Azure CLI, a Managed Identity
+  # and a Service Principal. More information on the authentication methods supported by
+  # the AzureRM Provider can be found here:
+  # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs#authenticating-to-azure
+
+  # The features block allows changing the behaviour of the Azure Provider, more
+  # information can be found here:
+  # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/guides/features-block
+  features {}
+}
+
+# 3. Create a resource group
+resource "azurerm_resource_group" "az_mra_rg" {
+  name     = "resource_group_cp2"
+  location = var.location
+  tags={
+  	enviroment="CP2"
+  }
+}
+
+# 4. Create Storage account
+resource "azurerm_storage_account" "az_mra_stAccount" {
+  name                		= "storageaccountcp2"
+  resource_group_name 		= azurerm_resource_group.az_mra_rg.name
+  location            		= azurerm_resource_group.az_mra_rg.location
+  account_tier	      		= "Standard"
+  account_replication_type 	="LRS"
+  
+  tags={
+	  enviroment="CP2"
+  }
+}
