@@ -1,4 +1,4 @@
-# 5. Create Virtual Network
+# 5. Creamos la red virtual
 resource "azurerm_virtual_network" "az_mra_network" {
 	name                = "virtual_network_cp2"
     address_space       = ["10.0.0.0/16"]
@@ -9,7 +9,7 @@ resource "azurerm_virtual_network" "az_mra_network" {
   }
 }
 	
-# 6. Create Subnetwork
+# 6. Creamos la subred
 resource "azurerm_subnet" "az_mra_subnet"{
 	name					= "terraform_subnet_cp2"
 	resource_group_name		= azurerm_resource_group.az_mra_rg.name
@@ -17,7 +17,7 @@ resource "azurerm_subnet" "az_mra_subnet"{
 	address_prefixes		= ["10.0.1.0/25"]
 }
 
-# 7. Create NIC
+# 7. Creamos el NIC 
 resource "azurerm_network_interface" "az_mra_nic1"{
 	name				= "vm_nic_1_cp2"
 	location			= azurerm_resource_group.az_mra_rg.location
@@ -35,7 +35,7 @@ resource "azurerm_network_interface" "az_mra_nic1"{
   }
 }
 
-# 8. Create Public IP
+# 8. Creamos la IP Publica
 resource "azurerm_public_ip" "az_mra_my_Public_Ip_1"{
 	name			= "vmip1_cp2"
 	location		= azurerm_resource_group.az_mra_rg.location

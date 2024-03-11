@@ -1,3 +1,4 @@
+# 0. Definimos las variables "location" y "vm_size"
 variable "location"{
 	type=string
 	description = "Region de Azure donde crearemos la infraestructura"

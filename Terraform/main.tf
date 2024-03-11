@@ -1,7 +1,7 @@
 # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs
 # https://github.com/hashicorp/terraform-provider-azurerm
 
-# 1. Specify the version of the AzureRM Provider to use
+# 1. Especificamos la versión del proveedor AzureRM que se utilizará
 terraform {
   required_providers {
     azurerm = {
@@ -11,7 +11,7 @@ terraform {
   }
 }
 
-# 2. Configure the AzureRM Provider
+# 2. Configuramos el proveedor de AzureRM 
 provider "azurerm" {
   # The AzureRM Provider supports authenticating using via the Azure CLI, a Managed Identity
   # and a Service Principal. More information on the authentication methods supported by
@@ -24,7 +24,8 @@ provider "azurerm" {
   features {}
 }
 
-# 3. Create a resource group
+# 3. Creamos un grupo de recursos, con la localizacioon
+# definida como variable en el fichero vars.tf
 resource "azurerm_resource_group" "az_mra_rg" {
   name     = "resource_group_cp2"
   location = var.location
@@ -33,7 +34,8 @@ resource "azurerm_resource_group" "az_mra_rg" {
   }
 }
 
-# 4. Create Storage account
+# 4. Creamos la cuenta de almacenaje, asociandola al grupo
+# de recursos definido en el punto 3, así como la localizacion
 resource "azurerm_storage_account" "az_mra_stAccount" {
   name                		= "storageaccountcp2"
   resource_group_name 		= azurerm_resource_group.az_mra_rg.name
