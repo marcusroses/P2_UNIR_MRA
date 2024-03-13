@@ -6,12 +6,13 @@ terraform {
   required_providers {
     azurerm = {
       source = "hashicorp/azurerm"
-      version = "=3.0.1"
+      version = "=3.85.0"
     }
   }
+  required_version = ">= 0.14"
 }
 
-# 2. Configuramos el proveedor de AzureRM 
+# 2. Creamos un servicio principal y rellena los datos para autenticar
 provider "azurerm" {
   # The AzureRM Provider supports authenticating using via the Azure CLI, a Managed Identity
   # and a Service Principal. More information on the authentication methods supported by
@@ -24,10 +25,11 @@ provider "azurerm" {
   features {}
 }
 
+
 # 3. Creamos un grupo de recursos, con la localizacioon
 # definida como variable en el fichero vars.tf
 resource "azurerm_resource_group" "az_mra_rg" {
-  name     = "resource_group_cp2"
+  name     = "resource_group_CP2"
   location = var.location
   tags={
   	enviroment="CP2"
@@ -37,7 +39,7 @@ resource "azurerm_resource_group" "az_mra_rg" {
 # 4. Creamos la cuenta de almacenaje, asociandola al grupo
 # de recursos definido en el punto 3, así como la localizacion
 resource "azurerm_storage_account" "az_mra_stAccount" {
-  name                		= "storageaccountcp2"
+  name                		= "storageaccountazurecp2"
   resource_group_name 		= azurerm_resource_group.az_mra_rg.name
   location            		= azurerm_resource_group.az_mra_rg.location
   account_tier	      		= "Standard"

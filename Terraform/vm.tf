@@ -7,7 +7,7 @@ resource "azurerm_linux_virtual_machine" "myVM1" {
   admin_username            = "adminUsername"
   network_interface_ids     = [azurerm_network_interface.az_mra_nic1.id]
   disable_password_authentication = true
-  admin_password            = "x0ei1892"
+  /*admin_password            = "x0ei1892"*/
 
   #Se incluye la clave generada
   admin_ssh_key {
@@ -24,9 +24,13 @@ resource "azurerm_linux_virtual_machine" "myVM1" {
   #Especificamos la imagen que se quiere utilizar al crear la VM
   source_image_reference {
     publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "16.04-LTS"
+    offer     = "0001-com-ubuntu-server-jammy"
+    sku       = "22_04-lts"
     version   = "latest"
+  }
+
+  boot_diagnostics{
+    storage_account_uri = azurerm_storage_account.az_mra_stAccount.primary_blob_endpoint
   }
 
   tags={

@@ -1,6 +1,6 @@
 # 5. Creamos la red virtual
 resource "azurerm_virtual_network" "az_mra_network" {
-	name                = "virtual_network_cp2"
+	name                = "virtual_network_CP2"
     address_space       = ["10.0.0.0/16"]
 	location			= azurerm_resource_group.az_mra_rg.location
 	resource_group_name	= azurerm_resource_group.az_mra_rg.name
@@ -11,20 +11,20 @@ resource "azurerm_virtual_network" "az_mra_network" {
 	
 # 6. Creamos la subred
 resource "azurerm_subnet" "az_mra_subnet"{
-	name					= "terraform_subnet_cp2"
+	name					= "terraform_subnet_CP2"
 	resource_group_name		= azurerm_resource_group.az_mra_rg.name
 	virtual_network_name	= azurerm_virtual_network.az_mra_network.name
-	address_prefixes		= ["10.0.1.0/25"]
+	address_prefixes		= ["10.0.1.0/24"]
 }
 
 # 7. Creamos el NIC 
 resource "azurerm_network_interface" "az_mra_nic1"{
-	name				= "vm_nic_1_cp2"
+	name				= "vm_nic_1_CP2"
 	location			= azurerm_resource_group.az_mra_rg.location
 	resource_group_name	= azurerm_resource_group.az_mra_rg.name
 	
 	ip_configuration{
-		name							= "my_ipconfiguration_1_cp2"
+		name							= "my_ipconfiguration_1_CP2"
 		subnet_id						= azurerm_subnet.az_mra_subnet.id
 		private_ip_address_allocation	= "Static"
 		private_ip_address				= "10.0.1.10"
@@ -37,7 +37,7 @@ resource "azurerm_network_interface" "az_mra_nic1"{
 
 # 8. Creamos la IP Publica
 resource "azurerm_public_ip" "az_mra_my_Public_Ip_1"{
-	name			= "vmip1_cp2"
+	name			= "az_vmip1_CP2"
 	location		= azurerm_resource_group.az_mra_rg.location
 	resource_group_name	= azurerm_resource_group.az_mra_rg.name
 	allocation_method	= "Dynamic"
