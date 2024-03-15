@@ -1,7 +1,7 @@
 all:
   hosts:
-    example-vm:
+    unir-vm:
       #ansible_host: "{{ lookup('pipe', 'terraform output ../Terraform/terraform output -state=Terraform/terraform.tfstate vm_ip_public_address') }}"
-      ansible_host: 52.169.27.168
+      ansible_host: 52.178.183.213
       ansible_user: adminUsername
       ansible_ssh_private_key_file: ~/.ssh/id_rsa

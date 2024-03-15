@@ -1,0 +1,33 @@
+- name: Carga de la imagen de un servidor web al ACR de Azure
+  hosts: all
+  become: yes
+  tasks: 
+    - name: Actualizar lista de paquetes
+      become: yes
+      apt:
+        update_cache: yes
+
+    - name: Instalar Podman
+      become: yes
+      apt:
+        name: podman
+        state: present
+  
+    - name: Descargar imagen servidor Apache HTTP Server
+      containers.podman.podman_image:
+        name: docker.io/library/httpd:latest
+
+    - name: Renombramos la imagen descargada a casopractico2
+      containers.podman.podman_tag:
+        image: docker.io/library/httpd:latest
+        target_names: 
+          - httpd:casopractico2
+
+    - name: Subimos la imagen a ACR
+      containers.podman.podman_image:
+        name: httpd:casopractico2
+        push: true    
+        username: "azMraACR"
+        password: "8EflDLT7d8loqAz0x14jnp74D4urAJ/WWzOQVk0CMl+ACRAIpiwL"
+        push_args:
+          dest: azmraacr.azurecr.io                
