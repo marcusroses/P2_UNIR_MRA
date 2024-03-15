@@ -1,0 +1,22 @@
+- name: Obtener dirección IP pública de Terraform y asignarla a una variable
+  hosts: unir-vm
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: Obtener dirección IP pública de Terraform
+      community.general.terraform:
+        project_path: /home/ubuntu/Documentos/UNIR_P2/Terraform/terraform
+        state: planned
+        plan_file: /home/ubuntu/Documentos/UNIR_P2/Terraform/mra.plan
+      register: terraform_output
+
+    - name: Guardar la dirección IP pública en una variable
+      set_fact:
+        vm_ip_public_address: "{{ terraform_output.outputs['vm_ip_public_address']['value'] }}"
+
+    - name: Escribir la dirección IP pública en el archivo vars.yml
+      copy:
+        content: |
+          vm_ip_public_address: "{{ vm_ip_public_address }}"
+        dest: vars.yml

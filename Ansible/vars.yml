@@ -1,0 +1,7 @@
+#Fichero de variables utilizadas en los playbooks de Ansible
+#ansible_host: "{{ lookup('pipe', 'terraform output ../Terraform/terraform output -state=Terraform/terraform.tfstate vm_ip_public_address') }}"
+azure_vm_ip: "52.178.183.213"
+azure_user: "adminUsername"
+azure_ssh_path: "~/.ssh/id_rsa"
+azure_acr_username: "azMraACR"
+azure_acr_pwd: "8EflDLT7d8loqAz0x14jnp74D4urAJ/WWzOQVk0CMl+ACRAIpiwL"

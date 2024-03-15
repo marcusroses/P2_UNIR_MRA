@@ -1,0 +1,9 @@
+- name: Cambiar la hora en la máquina virtual de Azure
+  hosts: unir-vm
+  vars_files:
+    - vars.yml
+  become: yes
+  tasks:
+    - name: Configurar la zona horaria a UTC
+      timezone:
+        name: UTC

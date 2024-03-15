@@ -1,33 +1,65 @@
 - name: Carga de la imagen de un servidor web al ACR de Azure
   hosts: unir-vm
+  vars_files:
+    - vars.yml    
   become: yes
   tasks: 
-    - name: Actualizar lista de paquetes
-      become: yes
-      apt:
-        update_cache: yes
+#    - name: Actualizar lista de paquetes
+#      become: yes
+#      apt:
+#        update_cache: yes
 
-    - name: Instalar Podman
-      become: yes
-      apt:
-        name: podman
-        state: present
+#    - name: Instalar Podman
+#      become: yes
+#      apt:
+#        name: podman
+#        state: present
 
-    - name: Descargar imagen de NGINX
+#    - name: Descargar imagen de NGINX
+#      containers.podman.podman_image:
+#        name: docker.io/nginx
+
+#    - name: Renombramos la imagen descargada a casopractico2
+#      containers.podman.podman_tag:
+#        image: docker.io/nginx:latest
+#        target_names: 
+#          - nginx:casopractico2
+
+#    - name: Subimos la imagen a ACR
+#      containers.podman.podman_image:
+#        name: nginx:casopractico2
+#        push: true    
+#        username: "{{ azure_acr_username }}"
+#        password: "{{ azure_acr_pwd }}"
+#        push_args:
+#          dest: azmraacr.azurecr.io            
+
+
+    - name: Build a Docker formatted image
       containers.podman.podman_image:
-        name: docker.io/nginx
+         name: nginx
+         path: /path/to/build/dir
+         build:
+           format: docker    
 
-    - name: Renombramos la imagen descargada a casopractico2
-      containers.podman.podman_tag:
-        image: docker.io/nginx:latest
-        target_names: 
-          - nginx:casopractico2
+#    - name: Stop a container
+#      containers.podman.podman_container:
+#        name: nginx_container
+#        state: stopped
 
-    - name: Subimos la imagen a ACR
-      containers.podman.podman_image:
-        name: nginx:casopractico2
-        push: true    
-        username: "azMraACR"
-        password: "8EflDLT7d8loqAz0x14jnp74D4urAJ/WWzOQVk0CMl+ACRAIpiwL"
-        push_args:
-          dest: azmraacr.azurecr.io                
+#    - name: remove container
+#      containers.podman.podman_container:
+#        name: nginx_container
+#        state: absent
+    
+    - name: Arrancar contenedor Docker
+      containers.podman.podman_container:
+        name: nginx_container
+        image: nginx:casopractico2
+        state: started
+        ports:
+          - 8080:80
+
+#    - name: Start nginx container
+#      ansible.builtin.shell: podman run -d --name nginx_container -p 8080:80 nginx:casopractico2                     
+    

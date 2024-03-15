@@ -1,15 +1,38 @@
-tasks: 
+- name: Carga de la imagen de un servidor web al ACR de Azure
+  hosts: all
+  vars_files:
+    - vars.yml  
+  become: yes
+  tasks: 
+    - name: Actualizar lista de paquetes
+      become: yes
+      apt:
+        update_cache: yes
+
+    - name: Instalar Podman
+      become: yes
+      apt:
+        name: podman
+        state: present
+
+
     - name: Descargar imagen de Apache HTTP Server para Ubuntu 22.04
       containers.podman.podman_image:
         name: docker.io/nginx
+        #pull: true
+        #tag: latest
 
-    - name: Añadimos un nombre a la imagen descargada
+    - name: Renombramos la imagen descargada a casopractico2
       containers.podman.podman_tag:
         image: docker.io/nginx:latest
         target_names: 
-            - nginx:CP2
+          - nginx:casopractico2
 
     - name: Subimos la imagen a ACR
       containers.podman.podman_image:
-        name: nginx:CP2
-        push: true            
+        name: nginx:casopractico2
+        push: true    
+        username: "azMraACR"
+        password: "8EflDLT7d8loqAz0x14jnp74D4urAJ/WWzOQVk0CMl+ACRAIpiwL"
+        push_args:
+          dest: azmraacr.azurecr.io                

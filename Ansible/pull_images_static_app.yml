@@ -1,33 +1,45 @@
-- name: Carga de la imagen de un servidor web al ACR de Azure
-  hosts: all
+- name: Carga de las imagenes necesarias para la instalación de una aplicaccion en Kubernetes
+  hosts: unir-vm
+  vars_files:
+    - vars.yml  
   become: yes
   tasks: 
-    - name: Actualizar lista de paquetes
-      become: yes
-      apt:
-        update_cache: yes
-
-    - name: Instalar Podman
-      become: yes
-      apt:
-        name: podman
-        state: present
   
-    - name: Descargar imagen servidor Apache HTTP Server
+    - name: Descargar imagen Microsoft Redis
       containers.podman.podman_image:
-        name: docker.io/library/httpd:latest
+        name: mcr.microsoft.com/oss/bitnami/redis:6.0.8
 
     - name: Renombramos la imagen descargada a casopractico2
       containers.podman.podman_tag:
-        image: docker.io/library/httpd:latest
+        image: mcr.microsoft.com/oss/bitnami/redis:6.0.8
         target_names: 
-          - httpd:casopractico2
+          - redis:casopractico2
 
-    - name: Subimos la imagen a ACR
+    - name: Subimos la imagen Redis a ACR
       containers.podman.podman_image:
-        name: httpd:casopractico2
+        name: redis:casopractico2
         push: true    
         username: "azMraACR"
         password: "8EflDLT7d8loqAz0x14jnp74D4urAJ/WWzOQVk0CMl+ACRAIpiwL"
         push_args:
-          dest: azmraacr.azurecr.io                
+          dest: azmraacr.azurecr.io     
+
+
+    - name: Descargar imagen Azure Frontal
+      containers.podman.podman_image:
+        name: mcr.microsoft.com/azuredocs/azure-vote-front:v1
+
+    - name: Renombramos la imagen descargada a casopractico2
+      containers.podman.podman_tag:
+        image: mcr.microsoft.com/azuredocs/azure-vote-front:v1
+        target_names: 
+          - azure_frontal:casopractico2
+
+    - name: Subimos la imagen Azure Frontal a ACR
+      containers.podman.podman_image:
+        name: azure_frontal:casopractico2
+        push: true    
+        username: "azMraACR"
+        password: "8EflDLT7d8loqAz0x14jnp74D4urAJ/WWzOQVk0CMl+ACRAIpiwL"
+        push_args:
+          dest: azmraacr.azurecr.io                     
