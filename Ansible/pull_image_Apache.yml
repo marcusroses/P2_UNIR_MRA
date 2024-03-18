@@ -29,7 +29,7 @@
       containers.podman.podman_image:
         name: httpd:casopractico2
         push: true    
-        username: "azMraACR"
-        password: "8EflDLT7d8loqAz0x14jnp74D4urAJ/WWzOQVk0CMl+ACRAIpiwL"
+        username: "{{ azure_acr_username }}"
+        password: "{{ azure_acr_pwd }}"
         push_args:
           dest: azmraacr.azurecr.io                
