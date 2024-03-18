@@ -7,7 +7,6 @@ resource "azurerm_linux_virtual_machine" "myVM1" {
   admin_username            = "adminUsername"
   network_interface_ids     = [azurerm_network_interface.az_mra_nic1.id]
   disable_password_authentication = true
-  /*admin_password            = "x0ei1892"*/
 
   #Se incluye la clave generada
   admin_ssh_key {
