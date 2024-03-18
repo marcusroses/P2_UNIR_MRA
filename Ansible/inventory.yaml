@@ -1,7 +1,10 @@
+#Fichero inventario para realizar conexiones a la VM de Azure
 all:
   hosts:
+    #Declaramos el host unir-vm que apuntará a la V; d Azure
     unir-vm:
-      #ansible_host: "{{ lookup('pipe', 'terraform output ../Terraform/terraform output -state=Terraform/terraform.tfstate vm_ip_public_address') }}"
-      ansible_host: 52.178.183.213
-      ansible_user: adminUsername
-      ansible_ssh_private_key_file: ~/.ssh/id_rsa
+      #Recuperamos los valores de la IP publica, el usuario y la ruta a la clave prmaria
+      #a partir de los parametros del fichero de variables
+      ansible_host: "{{ azure_vm_ip }}"
+      ansible_user: "{{ azure_user }}"
+      ansible_ssh_private_key_file: "{{ azure_ssh_path }}"
